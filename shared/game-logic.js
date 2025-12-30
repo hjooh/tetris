@@ -22,14 +22,15 @@ function shuffle(array) {
 
 // Generate the next sequence of pieces
 // 7-bag system
+let bag = []; // currently queued pieces
 function pieceSequenceGen() {
     const PIECES = ['I', 'O', 'T', 'S', 'Z', 'J', 'L'];
-    let bag = []; // currently queued pieces
+    
     if (bag.length === 0) {
         bag = [...PIECES];
         shuffle(bag);
     }
-    return bag.shift();
+    return bag.pop();
 }
 
 function rotateCW(matrix) {
@@ -55,7 +56,7 @@ const I_OFFSET_TABLE = {
 };
 
 function wallKicks(pieceType, rotationIndex, rotationDirection) { // 1: CW, -1: CCW
-    if (pieceType === 'O') return; // O pieces do not rotate
+    if (pieceType === 'O') return []; // O pieces do not rotate
     const nextRotationIndex = (rotationDirection === 1) ? (rotationIndex + 1) % 4 : (rotationIndex + 3) % 4;
     const table = (pieceType === 'I') ? I_OFFSET_TABLE : JLSTZ_OFFSET_TABLE;
     const currOffset = table[rotationIndex];
@@ -63,7 +64,7 @@ function wallKicks(pieceType, rotationIndex, rotationDirection) { // 1: CW, -1: 
     const kicks = []; // 5 possible "kicks" from end to start
     for (let i = 0; i < 5; i++) {
         const x = currOffset[i][0] - nextOffset[i][0];
-        const t = currOffset[0][1] - nextOffset[0][1];
+        const y = currOffset[i][1] - nextOffset[i][1];
         kicks.push({x, y});
     }
     return kicks;
@@ -83,6 +84,17 @@ document.addEventListener('keyup', event => {
         dropInterval = 1000; // Restore slow speed
     }
 });
+
+function dropPiece() {
+    player.pos.y++;
+    if (collide(arena, player)) {
+        player.pos.y--;
+        merge(arena, player);
+        reset();
+        arenaSweep();
+    }
+    dropCounter = 0;
+}
 
 let dropCounter = 0;
 let dropInterval = 1000; // 1s per drop @ start?
