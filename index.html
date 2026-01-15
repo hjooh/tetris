@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Tetris</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <div id="game-container">
+
+        <div class="left">
+            <canvas id="board" width="300" height="600"></canvas>
+            <div class="buttons">
+            <button id="start-game">Start Game</button>
+            <button id="settings">Settings</button>
+            </div>
+            <div class="bottom-panel">
+                <h2>Statistics</h2>
+                <canvas id="gameStats" class="game-Stats" width="120" height="80"></canvas>
+            </div>
+        </div>
+            
+            <div class="side-panel">
+                <div class="next-piece">
+                    <h2>Next Piece</h2>
+                    <canvas id="nextCanvas" class="next-canvas" width="120" height="80"></canvas>
+                </div>
+            </div>
+        
+    </div>
+
+    <script src="constants.js"></script>
+    <script src="piece.js"></script>
+    <script src="main.js"></script>
+</body>
+</html>
