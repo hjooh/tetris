@@ -61,6 +61,6 @@ class Piece {
 
     
     hold() {
-        //
+        
     }
 }

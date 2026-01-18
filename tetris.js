@@ -12,7 +12,14 @@ let time = {
 };
 let requestId = null;
 let score = 0;
+let heldPiece = null;
+let canHold = true;
 
+// statistics
+let numPlaced = 0;
+let finesse = 0.0;
+let pps = 0.0;
+let kpp = 0.0;
 
 // HELPER FUNCTIONS
 
@@ -39,6 +46,12 @@ function getNextPiece() {
         shuffle(bag);
     }
     return bag.pop();
+}
+
+// TODO: add statistics
+function showStatistics() {
+    statCtx.clearRect(0, 0, statCtx.canvas.width, statCtx.canvas.height);
+
 }
 
 function showNext() {
@@ -69,6 +82,32 @@ function showNext() {
     })
 }
 
+function showHold() {
+    holdCtx.clearRect(0, 0, holdCtx.canvas.width, holdCtx.canvas.height);
+
+    if (heldPiece) {
+        const shape=SHAPES[heldPiece];
+        // center
+        const offX = 1;
+        const offY = 1;
+
+        holdCtx.fillStyle = COLORS[heldPiece];
+
+        shape.forEach((row, y) => {
+            row.forEach((cell, x) => {
+                if (cell != 0) {
+                    holdCtx.fillRect(
+                        (offX + x) * BLOCK_SIZE, 
+                        (offY + y) * BLOCK_SIZE, 
+                        BLOCK_SIZE, 
+                        BLOCK_SIZE
+                    );
+    }
+})
+})
+    }
+}
+
 function showBoard() {
     for (let row = 0; row < ROWS; row++) {
         for (let col = 0; col < COLS; col++) {
@@ -81,6 +120,14 @@ function showBoard() {
 }
 
 function resetGame() {
+
+    // cancel the update the frame (communicating with browser), killing the current game
+    // makes sure only one version of the game exists at a time
+    if (requestId) {
+        cancelAnimationFrame(requestId);
+        requestId = null;
+    }
+
     board = new Array(ROWS);
     for (let i = 0; i < board.length; i++) {
         board[i] = new Array(COLS).fill(0);
@@ -94,7 +141,15 @@ function resetGame() {
     const firstPiece = nextPieces.shift();
     nextPieces.push(getNextPiece());
     currentPiece = new Piece(ctx, firstPiece);
+
+    canHold = true;
+    heldPiece = null;
+    showHold();
     showNext();
+
+    time.start = performance.now();
+    time.elapsed = 0;
+    time.level = 1000;
     game();
 }
 
@@ -125,6 +180,7 @@ function game(t=0) {
             currentPiece.move(0, -1);
             currentPiece.place(board);
             clearLines();
+            canHold = true;
             popNextPiece();
             
         }
@@ -142,6 +198,14 @@ function popNextPiece() {
     currentPiece = new Piece(ctx, nextPiece);
     nextPieces.push(getNextPiece());
     showNext();
+
+    if (!currentPiece.valid(board)) {
+        // show game over screen
+        board.forEach(row=> row.fill(0));
+        score = 0;
+        cancelAnimationFrame(requestId);
+        requestId= null;
+    }
 }
 
 // KEYBOARD INPUT HANDLING
@@ -166,9 +230,9 @@ document.addEventListener('keydown', (event) => {
                 currentPiece.move(0, -1);
                 currentPiece.place(board);
                 clearLines();
+                canHold = true;
                 popNextPiece();
             }
-            currentPiece.move(0, 1);
             break;
         case "Space":
             // hard drop
@@ -178,7 +242,9 @@ document.addEventListener('keydown', (event) => {
             currentPiece.move(0, -1);
             currentPiece.place(board);
             clearLines();
+            canHold = true;
             popNextPiece();
+            
             break;
         case "ArrowLeft":
             currentPiece.move(-1, 0);
@@ -195,7 +261,20 @@ document.addEventListener('keydown', (event) => {
             //
             break;
         case "KeyC":        // hold
-            currentPiece.hold();
+            if (!canHold) return;
+            const currentpid = currentPiece.pid;
+            if (heldPiece === null) {
+                heldPiece = currentpid;
+                popNextPiece();
+            } else {
+                const temp = heldPiece;
+                heldPiece = currentpid;
+                currentPiece = new Piece (ctx, temp);
+            }
+
+            canHold = false;
+            showHold();
+            break;
     }
 
     ctx.clearRect(0, 0, canvas.width, canvas.height);

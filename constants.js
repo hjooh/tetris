@@ -10,6 +10,10 @@ const nextCtx = nextPanel.getContext('2d');
 
 const start = null;
 
+const holdCtx = document.getElementById('holdPanel').getContext('2d');
+
+const statCtx = document.getElementById('gameStats').getContext('2d');
+
 // piece color palette to do "paint by colors"
 const COLORS = [
     'black',  // 0  empty space
