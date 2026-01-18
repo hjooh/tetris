@@ -14,6 +14,8 @@ let requestId = null;
 let score = 0;
 let heldPiece = null;
 let canHold = true;
+let gameOver = false;
+
 
 // statistics
 let numPlaced = 0;
@@ -127,7 +129,7 @@ function resetGame() {
         cancelAnimationFrame(requestId);
         requestId = null;
     }
-
+    gameOver = false;
     board = new Array(ROWS);
     for (let i = 0; i < board.length; i++) {
         board[i] = new Array(COLS).fill(0);
@@ -187,11 +189,16 @@ function game(t=0) {
 
         time.start = t;
     }
+
+    if (gameOver) {
+        return;
+    }
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     showBoard();
     currentPiece.draw();
     requestId = requestAnimationFrame(game);
 }
+
 
 function popNextPiece() {
     const nextPiece = nextPieces.shift();
@@ -201,18 +208,29 @@ function popNextPiece() {
 
     if (!currentPiece.valid(board)) {
         // show game over screen
-        board.forEach(row=> row.fill(0));
-        score = 0;
+        
+        gameOver = true;
         cancelAnimationFrame(requestId);
         requestId= null;
+
+        ctx.fillStyle = "rgba(0, 0, 0, 0.8)"; 
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+        
     }
 }
+
+
 
 // KEYBOARD INPUT HANDLING
 
 // @see https://developer.mozilla.org/en-US/docs/Web/API/EventTarget/addEventListener
 // @see https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/code
 document.addEventListener('keydown', (event) => {
+
+    if (gameOver) {
+        return;
+    }
 
     if(["ArrowUp","ArrowDown", "ArrowLeft", "ArrowRight", "Space"].includes(event.code)) {
         event.preventDefault();
@@ -275,6 +293,10 @@ document.addEventListener('keydown', (event) => {
             canHold = false;
             showHold();
             break;
+    }
+
+    if (gameOver) {
+        return;
     }
 
     ctx.clearRect(0, 0, canvas.width, canvas.height);
