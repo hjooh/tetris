@@ -4,29 +4,34 @@
     <title>Tetris</title>
     <link rel="stylesheet" href="style.css">
 </head>
-
 <body>
-    <div id="game-container">
 
-        <div class="left">
+    <div id="game-container">
+        
+        <div class="column side-column">
+            <h2>Hold</h2>
+            <canvas id="holdPanel" class="info-canvas" width="140" height="500"></canvas>
+        </div>
+
+        <div class="column center-column">
             <canvas id="board" width="300" height="600"></canvas>
+            
             <div class="buttons">
-            <button id="start-game">Start Game</button>
-            <button id="settings">Settings</button>
+                <button id="start-game">Start Game</button>
+                <button id="settings">Settings</button>
             </div>
-            <div class="bottom-panel">
+
+            <div class="stats-panel">
                 <h2>Statistics</h2>
-                <canvas id="gameStats" class="game-Stats" width="120" height="80"></canvas>
+                <canvas id="gameStats" width="300" height="80"></canvas>
             </div>
         </div>
-            
-            <div class="side-panel">
-                <div class="next-piece">
-                    <h2>Next Piece</h2>
-                    <canvas id="nextPanel" class="next-canvas" width="140" height="100"></canvas>
-                </div>
-            </div>
-        
+
+        <div class="column side-column">
+            <h2>Next</h2>
+            <canvas id="nextPanel" class="info-canvas" width="140" height="500"></canvas>
+        </div>
+
     </div>
 
     <script src="constants.js"></script>

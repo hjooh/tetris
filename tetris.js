@@ -4,7 +4,7 @@
 let board = [];
 let bag = [];
 let currentPiece = null;
-let nextPiece = null;
+let nextPieces = [];
 let time = {
     start: 0,
     elapsed: 0,
@@ -44,21 +44,28 @@ function getNextPiece() {
 function showNext() {
     // clear the canvas
     nextCtx.clearRect(0, 0, nextPanel.width, nextPanel.height);
-    // get the next shape
-    const nextShape = SHAPES[nextPiece]
-    // center
-    const offX = 1;
-    const offY = 1;
-
-    nextCtx.fillStyle = COLORS[nextPiece];
     
+    nextPieces.forEach((pid, index) => {
     // draw (same logic as main)
-    nextShape.forEach((row, y) => {
-        row.forEach((cell, x) => {
-            if (cell != 0) {
-                nextCtx.fillRect((x+offX)*BLOCK_SIZE, (y+offY)*BLOCK_SIZE, BLOCK_SIZE, BLOCK_SIZE);
-            }
-        })
+        const shape=SHAPES[pid];
+        // center
+        const offX = 1;
+        const offY = (index *3)+1;
+
+        nextCtx.fillStyle = COLORS[pid];
+
+        shape.forEach((row, y) => {
+            row.forEach((cell, x) => {
+                if (cell != 0) {
+                    nextCtx.fillRect(
+                        (offX + x) * BLOCK_SIZE, 
+                        (offY + y) * BLOCK_SIZE, 
+                        BLOCK_SIZE, 
+                        BLOCK_SIZE
+                    );
+    }
+})
+})
     })
 }
 
@@ -80,8 +87,13 @@ function resetGame() {
     }
     score = 0;
     bag = [];
-    nextPiece = getNextPiece();
-    currentPiece = new Piece(ctx, getNextPiece());
+    nextPieces = [];
+    for (let i =0; i < 5; i++) {
+        nextPieces.push(getNextPiece());
+    }
+    const firstPiece = nextPieces.shift();
+    nextPieces.push(getNextPiece());
+    currentPiece = new Piece(ctx, firstPiece);
     showNext();
     game();
 }
@@ -113,9 +125,8 @@ function game(t=0) {
             currentPiece.move(0, -1);
             currentPiece.place(board);
             clearLines();
-            currentPiece = new Piece(ctx, nextPiece);
-            nextPiece = getNextPiece();
-            showNext();
+            popNextPiece();
+            
         }
 
         time.start = t;
@@ -124,6 +135,13 @@ function game(t=0) {
     showBoard();
     currentPiece.draw();
     requestId = requestAnimationFrame(game);
+}
+
+function popNextPiece() {
+    const nextPiece = nextPieces.shift();
+    currentPiece = new Piece(ctx, nextPiece);
+    nextPieces.push(getNextPiece());
+    showNext();
 }
 
 // KEYBOARD INPUT HANDLING
@@ -143,11 +161,12 @@ document.addEventListener('keydown', (event) => {
             }
             break;
         case "ArrowDown":
+            currentPiece.move(0, 1);
             if (!currentPiece.valid(board)) {
                 currentPiece.move(0, -1);
                 currentPiece.place(board);
                 clearLines();
-                currentPiece = new Piece(ctx, getNextPiece());
+                popNextPiece();
             }
             currentPiece.move(0, 1);
             break;
@@ -159,9 +178,7 @@ document.addEventListener('keydown', (event) => {
             currentPiece.move(0, -1);
             currentPiece.place(board);
             clearLines();
-            currentPiece = new Piece(ctx, nextPiece);
-            nextPiece = getNextPiece();
-            showNext();
+            popNextPiece();
             break;
         case "ArrowLeft":
             currentPiece.move(-1, 0);
@@ -177,6 +194,8 @@ document.addEventListener('keydown', (event) => {
         case "KeyZ":        // 90 ccw
             //
             break;
+        case "KeyC":        // hold
+            currentPiece.hold();
     }
 
     ctx.clearRect(0, 0, canvas.width, canvas.height);

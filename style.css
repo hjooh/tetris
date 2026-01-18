@@ -3,33 +3,65 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100vh;
+    min-height: 100vh; 
     color: white;
     font-family: monospace;
-}
-
-canvas {
-    border: 1px solid #fff; 
+    margin: 0;
 }
 
 #game-container {
     display: flex;
-    align-items: flex-start;
     justify-content: center;
+    align-items: flex-start; 
+    gap: 40px;               
+}
+
+.column {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     gap: 20px;
 }
 
-.left {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    gap: 10px;
+.side-column {
+    padding-top: 10px; 
+}
+
+.info-canvas {
+    background-color: #000;
+}
+
+.center-column {
+    justify-content: flex-start;
+}
+
+#board {
+    border: 2px solid #fff; 
+    background-color: #000;
 }
 
 .buttons {
     display: flex;
-    align-items: flex-start;
-    justify-content: center;
-    gap: 10px;
+    gap: 15px;
+    margin-bottom: 10px;
+}
+
+button {
+    cursor: pointer;
+    font-family: monospace;
+}
+
+.stats-panel {
+    text-align: center;
+    width: 100%;
+}
+
+#gameStats {
+    background-color: #000;
+}
+
+h2 {
+    margin: 0 0 5px 0;
+    font-size: 1.2rem;
+    color: #ccc;
 }
