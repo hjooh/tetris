@@ -1,17 +1,15 @@
 body {
-    background-color: #000000; 
+    background: black; 
     display: flex;
     justify-content: center;
     align-items: center;
     height: 100vh;
-    margin: 0;
     color: white;
     font-family: monospace;
 }
 
 canvas {
-    border: 2px solid #fff; 
-    background-color: #000;
+    border: 1px solid #fff; 
 }
 
 #game-container {

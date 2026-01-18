@@ -5,8 +5,10 @@ const BLOCK_SIZE = 30;
 const canvas = document.querySelector('#board');
 const ctx = canvas.getContext('2d'); 
 
-const score = NULL;
-const start = NULL;
+const nextPanel = document.getElementById('nextPanel')
+const nextCtx = nextPanel.getContext('2d');
+
+const start = null;
 
 // piece color palette to do "paint by colors"
 const COLORS = [
@@ -21,7 +23,8 @@ const COLORS = [
 ]
 
 // piece definitions (numbers aligned to the COLORS)
-const PIECES = [
+const SHAPES = [
+    [],
     [[0, 0, 0, 0], [1, 1, 1, 1], [0, 0, 0, 0], [0, 0, 0, 0]], // I
     [[2, 0, 0], [2, 2, 2], [0, 0, 0]],                        // J
     [[0, 0, 3], [3, 3, 3], [0, 0, 0]],                        // L
