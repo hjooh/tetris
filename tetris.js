@@ -273,10 +273,18 @@ document.addEventListener('keydown', (event) => {
             if (!currentPiece.valid(board)) currentPiece.move(-1, 0);
             break;
         case "KeyA":        // 180  
-            //
+            currentPiece.rotateCW();
+            currentPiece.rotateCW();
+            if (!currentPiece.valid(board)) {
+                currentPiece.rotateCCW();
+                currentPiece.rotateCCW();
+            }
             break;
         case "KeyZ":        // 90 ccw
-            //
+            currentPiece.rotateCCW();
+            if (!currentPiece.valid(board)) {
+                currentPiece.rotateCW();
+            }
             break;
         case "KeyC":        // hold
             if (!canHold) return;
