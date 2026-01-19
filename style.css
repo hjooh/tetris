@@ -27,9 +27,9 @@ body {
     padding-top: 10px; 
 }
 
-.info-canvas {
+/* .info-canvas {
     background-color: #000;
-}
+} */
 
 .center-column {
     justify-content: flex-start;
@@ -51,14 +51,14 @@ button {
     font-family: monospace;
 }
 
-.stats-panel {
+/* .stats-panel {
     text-align: center;
     width: 100%;
-}
+} */
 
-#gameStats {
+/* #gameStats {
     background-color: #000;
-}
+} */
 
 h2 {
     margin: 0 0 5px 0;

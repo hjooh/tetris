@@ -4,14 +4,9 @@ const BLOCK_SIZE = 30;
 
 const canvas = document.querySelector('#board');
 const ctx = canvas.getContext('2d'); 
-
 const nextPanel = document.getElementById('nextPanel')
 const nextCtx = nextPanel.getContext('2d');
-
-const start = null;
-
 const holdCtx = document.getElementById('holdPanel').getContext('2d');
-
 const statCtx = document.getElementById('gameStats').getContext('2d');
 
 // piece color palette to do "paint by colors"
