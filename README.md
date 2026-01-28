@@ -1,5 +1,6 @@
 # tetris
-hi! I love Tetris, and so I decided to get even more familiar with the game (and teach myself JS) by programming my own version of it. I used to play a lot of ranked Tetris on [Tetrio](https://tetr.io/), which I highly recommend checking out if you have some spare time.
+
+hi! I love Tetris, and so I decided to get even more familiar with the game (and conveniently learn some JavaScript) by programming my own version of it. I used to play a lot of ranked Tetris on [Tetrio](https://tetr.io/), which I highly recommend checking out if you have some spare time.
 
 ## how to play
 open `index.html` in your browser of choice, or navigate to this [link](https://hjooh.github.io/tetris/)!
