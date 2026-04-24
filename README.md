@@ -14,7 +14,7 @@ open `index.html` in your browser of choice, or navigate to this [link](https://
 - **co-op multiplayer mode:** a  version where players can team up with each other so that my friends are willing to play with me (a 4v1 should be more fair, right..?)
 
 ## acknowledgements & citations
-while I built this project from scratch, I did reference the following resources to get me started and for some specific algorithms:
+while I built this project from scratch (yes, this is hand coded), I did reference the following resources to get me started and for some specific algorithms:
 - matrix rotation: [StackOverflow](https://stackoverflow.com/questions/15170942/how-to-rotate-a-matrix-in-an-array-in-javascript)
 - fisher-yates shuffle: [Wikipedia](https://en.wikipedia.org/wiki/Fisher–Yates_shuffle)
 - MDN web docs: [Mozilla Web Docs](https://developer.mozilla.org/en-US/)
